@@ -26,6 +26,7 @@ const HomeStack = createStackNavigator();
 
 export default function App() {
   const [userToken, setUserToken] = React.useState(null);
+  const [userId, setUserId] = React.useState("");
   const authContext = React.useMemo(() => {
     return {
       setToken: (token) => {
@@ -33,6 +34,13 @@ export default function App() {
       },
       signOut: () => {
         setUserToken(null);
+        serUserId(null);
+      },
+      setUserId: (userId) => {
+        setUserId(userId);
+      },
+      getUserId: () => {
+        return userId;
       },
     };
   });

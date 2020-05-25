@@ -6,12 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { AuthContext } from "../../Context";
 
 export default function createUser() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const { setId } = React.useContext(AuthContext);
 
   function createUserPost() {
     // fetch("http://3.34.1.138:8080/auth/register", {
@@ -20,7 +22,6 @@ export default function createUser() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
       },
       body: JSON.stringify({
         email: email,
@@ -30,17 +31,15 @@ export default function createUser() {
       }),
     };
 
-    console.log("data.body :>> ", data.body);
-
     fetch(url, data)
       .then((response) => {
-        response.json();
-        console.log("response :>> ", response);
+        return response.json();
+      })
+      .then((responseJson) => {
+        setId(responseJson.userId);
       })
       .catch((error) => {
         console.log(error);
-        console.log("에러다 에러");
-        throw error;
       });
   }
 
