@@ -14,16 +14,34 @@ export default function createUser() {
   const [phone, setPhone] = useState("");
 
   function createUserPost() {
-    fetch("http://3.34.1.138:8080/auth/register", {
+    // fetch("http://3.34.1.138:8080/auth/register", {
+    const url = "http://192.168.0.29:8080/auth/register";
+    const data = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       body: JSON.stringify({
         email: email,
         password: password,
         name: name,
         phone: phone,
-      }).then((respons) => respons.json()),
-    });
+      }),
+    };
+
+    console.log("data.body :>> ", data.body);
+
+    fetch(url, data)
+      .then((response) => {
+        response.json();
+        console.log("response :>> ", response);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("에러다 에러");
+        throw error;
+      });
   }
 
   return (

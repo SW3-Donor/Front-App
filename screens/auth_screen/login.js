@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,34 @@ import {
 import { AuthContext } from "../../Context";
 
 export default function login({ navigation }) {
-  const { signIn } = React.useContext(AuthContext);
+  const { setToken } = React.useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function signIn() {
+    const url = "http://192.168.0.29:8080/auth/login";
+    const data = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    };
+
+    fetch(url, data)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseJson) => {
+        setToken(responseJson.token);
+      })
+      .catch((error) => {
+        alert("test");
+      });
+  }
 
   return (
     <View style={styles.container}>
@@ -23,12 +50,16 @@ export default function login({ navigation }) {
             placeholder="이메일"
             keyboardType="email-address"
             textContentType="emailAddress"
+            onChangeText={(text) => setEmail(text)}
+            defaultValue={email}
           />
           <TextInput
             style={styles.inputBox}
             placeholder="비밀번호"
             textContentType="password"
             secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
+            defaultValue={password}
           />
           <TouchableOpacity style={styles.loginBtn} onPress={() => signIn()}>
             <Text style={{ color: "white" }}>로그인</Text>

@@ -28,8 +28,8 @@ export default function App() {
   const [userToken, setUserToken] = React.useState(null);
   const authContext = React.useMemo(() => {
     return {
-      signIn: () => {
-        setUserToken("asdf");
+      setToken: (token) => {
+        setUserToken(token);
       },
       signOut: () => {
         setUserToken(null);
