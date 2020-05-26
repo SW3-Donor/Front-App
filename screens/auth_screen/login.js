@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { AuthContext } from "../../Context";
 
@@ -14,7 +15,7 @@ export default function login({ navigation }) {
   const [password, setPassword] = useState("");
 
   function signIn() {
-    const url = "http://192.168.0.29:8080/auth/login";
+    const url = "http://192.168.0.135:8080/auth/login";
     const data = {
       method: "POST",
       headers: {
@@ -40,6 +41,7 @@ export default function login({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Image source={require("../../assets/donor.png")} style={styles.logo} />
       <View style={styles.form}>
         <View style={styles.input}>
           <Text style={{ fontSize: 25, marginBottom: 10, color: "#fb5555" }}>
@@ -82,6 +84,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     alignItems: "center",
     justifyContent: "center",
+  },
+  logo: {
+    width: 200,
+    resizeMode: "contain",
+    marginBottom: 10,
   },
   form: {
     backgroundColor: "#fb5555",

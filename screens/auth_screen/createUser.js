@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { AuthContext } from "../../Context";
 
@@ -13,11 +14,12 @@ export default function createUser() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
   const { setId } = React.useContext(AuthContext);
 
-  function createUserPost() {
+  function createUserFetch() {
     // fetch("http://3.34.1.138:8080/auth/register", {
-    const url = "http://192.168.0.29:8080/auth/register";
+    const url = "http://192.168.0.135:8080/auth/register";
     const data = {
       method: "POST",
       headers: {
@@ -43,8 +45,18 @@ export default function createUser() {
       });
   }
 
+  function createUserBtn() {
+    createUserFetch();
+  }
+
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      ></Modal>
+
       <View style={styles.form}>
         <View style={styles.input}>
           <Text style={{ fontSize: 25, marginBottom: 10, color: "#fb5555" }}>
@@ -84,7 +96,7 @@ export default function createUser() {
             onChangeText={(text) => setPhone(text)}
             defaultValue={phone}
           />
-          <TouchableOpacity style={styles.signupBtn} onPress={createUserPost}>
+          <TouchableOpacity style={styles.signupBtn} onPress={createUserBtn}>
             <Text style={{ color: "red" }}>회원가입</Text>
           </TouchableOpacity>
         </View>
