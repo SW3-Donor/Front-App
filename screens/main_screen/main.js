@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { block } from "react-native-reanimated";
 
 export default function main({ navigation }) {
   return (

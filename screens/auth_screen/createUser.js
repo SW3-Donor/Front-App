@@ -15,7 +15,6 @@ export default function createUser() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const { setId } = React.useContext(AuthContext);
 
   function createUserFetch() {
     // fetch("http://3.34.1.138:8080/auth/register", {
@@ -38,7 +37,8 @@ export default function createUser() {
         return response.json();
       })
       .then((responseJson) => {
-        setId(responseJson.userId);
+        console.log(responseJson);
+        setModalVisible(true);
       })
       .catch((error) => {
         console.log(error);
@@ -47,6 +47,7 @@ export default function createUser() {
 
   function createUserBtn() {
     createUserFetch();
+    console.log(modalVisible);
   }
 
   return (
@@ -55,7 +56,23 @@ export default function createUser() {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-      ></Modal>
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
+          }}
+        >
+          <View style={styles.modalView}>
+            <Text>회원가입이 완료되었습니다.</Text>
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.form}>
         <View style={styles.input}>
@@ -98,6 +115,12 @@ export default function createUser() {
           />
           <TouchableOpacity style={styles.signupBtn} onPress={createUserBtn}>
             <Text style={{ color: "red" }}>회원가입</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.signupBtn}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={{ color: "red" }}>asdfasdf</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -145,5 +168,13 @@ const styles = StyleSheet.create({
     borderColor: "#fb5555",
     borderWidth: 1,
     padding: 10,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    elevation: 5,
   },
 });
