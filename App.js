@@ -23,6 +23,11 @@ const AuthScreen = () => (
 );
 
 const HomeStack = createStackNavigator();
+const HomeStackScreen = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen name="main" component={main} />
+  </HomeStack.Navigator>
+);
 
 export default function App() {
   const [userToken, setUserToken] = React.useState(null);
@@ -48,13 +53,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {userToken ? (
-          <HomeStack.Navigator>
-            <HomeStack.Screen name="main" component={main} />
-          </HomeStack.Navigator>
-        ) : (
-          <RootStackScreen />
-        )}
+        {userToken ? <HomeStackScreen /> : <RootStackScreen />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

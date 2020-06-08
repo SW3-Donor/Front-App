@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import { AuthContext } from "../../Context";
 
@@ -40,7 +41,10 @@ export default function login({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <Image source={require("../../assets/donor.png")} style={styles.logo} />
       <View style={styles.form}>
         <View style={styles.input}>
@@ -74,7 +78,7 @@ export default function login({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

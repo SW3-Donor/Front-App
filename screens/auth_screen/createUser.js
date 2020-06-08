@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
+  KeyboardAvoidingView,
 } from "react-native";
 import { AuthContext } from "../../Context";
 
@@ -51,7 +52,10 @@ export default function createUser() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <Modal
         animationType="slide"
         transparent={true}
@@ -60,7 +64,10 @@ export default function createUser() {
           setModalVisible(false);
         }}
       >
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(false);
+          }}
           style={{
             flex: 1,
             justifyContent: "center",
@@ -71,7 +78,7 @@ export default function createUser() {
           <View style={styles.modalView}>
             <Text>회원가입이 완료되었습니다.</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
 
       <View style={styles.form}>
@@ -116,15 +123,9 @@ export default function createUser() {
           <TouchableOpacity style={styles.signupBtn} onPress={createUserBtn}>
             <Text style={{ color: "red" }}>회원가입</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.signupBtn}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={{ color: "red" }}>asdfasdf</Text>
-          </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
