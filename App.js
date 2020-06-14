@@ -5,7 +5,10 @@ import { AuthContext } from "./Context";
 
 import login from "./screens/auth_screen/login";
 import createUser from "./screens/auth_screen/createUser";
+import createSecondPassword from "./screens/auth_screen/createSecondPassword";
+
 import main from "./screens/main_screen/main";
+import bloodRegister from "./screens/main_screen/bloodRegister";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -19,6 +22,10 @@ const AuthScreen = () => (
   <AuthStack.Navigator headerMode="none">
     <AuthStack.Screen name="logIn" component={login} />
     <AuthStack.Screen name="createUser" component={createUser} />
+    <AuthStack.Screen
+      name="createSecondPassword"
+      component={createSecondPassword}
+    />
   </AuthStack.Navigator>
 );
 
@@ -26,16 +33,30 @@ const HomeStack = createStackNavigator();
 const HomeStackScreen = () => (
   <HomeStack.Navigator>
     <HomeStack.Screen name="main" component={main} />
+    <HomeStack.Screen
+      name="bloodRegister"
+      component={bloodRegister}
+      options={{ title: "헌혈증 추가", headerTintColor: "#fb5555" }}
+    />
   </HomeStack.Navigator>
 );
 
 export default function App() {
   const [userToken, setUserToken] = React.useState(null);
   const [userId, setUserId] = React.useState("");
+  const [serverUrl, setServerUrl] = React.useState(
+    "http://192.168.0.135:8080/"
+  );
   const authContext = React.useMemo(() => {
     return {
+      getServerUrl: () => {
+        return serverUrl;
+      },
       setToken: (token) => {
         setUserToken(token);
+      },
+      getToken: () => {
+        return userToken;
       },
       signOut: () => {
         setUserToken(null);

@@ -11,12 +11,12 @@ import {
 import { AuthContext } from "../../Context";
 
 export default function login({ navigation }) {
-  const { setToken } = React.useContext(AuthContext);
+  const { getServerUrl, setToken } = React.useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function signIn() {
-    const url = "http://192.168.0.135:8080/auth/login";
+    const url = `${getServerUrl()}auth/login`;
     const data = {
       method: "POST",
       headers: {

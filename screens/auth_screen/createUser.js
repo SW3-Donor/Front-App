@@ -7,19 +7,29 @@ import {
   TouchableOpacity,
   Modal,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { AuthContext } from "../../Context";
 
-export default function createUser() {
+export default function createUser({ navigation }) {
+  const { getServerUrl } = React.useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [userId, setUserId] = useState("");
+
+  function closeModal() {
+    console.log("isSuccess :>> ", isSuccess);
+    setModalVisible(false);
+    if (isSuccess)
+      navigation.navigate("createSecondPassword", { userId: userId });
+  }
 
   function createUserFetch() {
-    // fetch("http://3.34.1.138:8080/auth/register", {
-    const url = "http://192.168.0.135:8080/auth/register";
+    const url = `${getServerUrl()}auth/register`;
     const data = {
       method: "POST",
       headers: {
@@ -39,16 +49,21 @@ export default function createUser() {
       })
       .then((responseJson) => {
         console.log(responseJson);
-        setModalVisible(true);
+        if (responseJson.message === "이미 가입되어 있는 메일입니다.") {
+          Alert.alert("중복된 이메일", "이미 가입되어 있는 메일입니다");
+        } else {
+          setUserId(responseJson.userId);
+          setIsSuccess(true);
+          setModalVisible(true);
+        }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error :>> ", error);
       });
   }
 
   function createUserBtn() {
     createUserFetch();
-    console.log(modalVisible);
   }
 
   return (
@@ -65,9 +80,7 @@ export default function createUser() {
         }}
       >
         <TouchableOpacity
-          onPress={() => {
-            setModalVisible(false);
-          }}
+          onPress={closeModal}
           style={{
             flex: 1,
             justifyContent: "center",
@@ -76,7 +89,10 @@ export default function createUser() {
           }}
         >
           <View style={styles.modalView}>
-            <Text>회원가입이 완료되었습니다.</Text>
+            <Text style={{ fontSize: 20, marginBottom: 15 }}>
+              회원가입이 완료되었습니다.
+            </Text>
+            <Text style={{ fontSize: 15 }}> 2차비밀번호를 설정합니다.</Text>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -122,6 +138,15 @@ export default function createUser() {
           />
           <TouchableOpacity style={styles.signupBtn} onPress={createUserBtn}>
             <Text style={{ color: "red" }}>회원가입</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.signupBtn}
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          >
+            <Text style={{ color: "red" }}>모달띄우기</Text>
           </TouchableOpacity>
         </View>
       </View>
