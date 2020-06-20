@@ -9,6 +9,7 @@ import createSecondPassword from "./screens/auth_screen/createSecondPassword";
 
 import main from "./screens/main_screen/main";
 import bloodRegister from "./screens/main_screen/bloodRegister";
+import checkSecondPassword from "./screens/main_screen/checkSecondPassword";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -32,7 +33,16 @@ const AuthScreen = () => (
 const HomeStack = createStackNavigator();
 const HomeStackScreen = () => (
   <HomeStack.Navigator>
-    <HomeStack.Screen name="main" component={main} />
+    <HomeStack.Screen
+      name="main"
+      component={main}
+      options={{ title: "도너", headerTintColor: "#fb5555" }}
+    />
+    <HomeStack.Screen
+      name="checkSecondPassword"
+      component={checkSecondPassword}
+      options={{ title: "2차 비밀번호 확인", headerTintColor: "#fb5555" }}
+    />
     <HomeStack.Screen
       name="bloodRegister"
       component={bloodRegister}

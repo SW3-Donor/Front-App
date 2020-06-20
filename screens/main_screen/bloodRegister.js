@@ -3,40 +3,22 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { TextInput, ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
 
-export default function App() {
+export default function bloodRegister({ navigation }) {
   const { getServerUrl, getToken } = React.useContext(AuthContext);
   const [number, setNumber] = useState("");
   const serverUrl = getServerUrl();
 
-  // function submit() {
-  //   const url = `${serverUrl}/blood/register`;
-  //   const data = {
-  //     method: "POST",
-  //     headers: {
-  //       Authhorization: `Bearer ${getToken()}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       secondpassword: sec,
-  //       number: number,
-  //     }),
-  //   };
-
-  //   fetch(url, data)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((responseJson) => {
-  //       setToken(responseJson.token);
-  //     })
-  //     .catch((error) => {
-  //       alert("test");
-  //     });
-  // }
+  function submit() {
+    navigation.navigate("checkSecondPassword", {
+      number: number,
+      mode: "register",
+    });
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.inputView}>
+        <Text style={{ margin: 7 }}>헌혈증 번호를 입력해 주세요</Text>
         <TextInput
           placeholder="헌혈증 번호"
           keyboardType="decimal-pad"

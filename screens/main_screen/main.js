@@ -21,7 +21,7 @@ export default function main({ navigation }) {
           <View>
             <Text style={styles.titleText}>
               <Text>10</Text>
-              <Text>장 ></Text>
+              <Text>장 {">"}</Text>
             </Text>
           </View>
         </TouchableOpacity>
@@ -48,7 +48,7 @@ export default function main({ navigation }) {
             <Text style={styles.titleText}>기부 게시판</Text>
           </View>
           <View>
-            <Text style={styles.titleText}>></Text>
+            <Text style={styles.titleText}>{">"}</Text>
           </View>
         </View>
         <View>
