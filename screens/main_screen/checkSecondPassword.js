@@ -4,15 +4,17 @@ import { TextInput, ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
 
 export default function bloodRegister({ route, navigation }) {
-  const { number, mode } = route.params;
+  const { number, mode, email, count } = route.params;
   const { getServerUrl, getToken } = React.useContext(AuthContext);
   const [secondPw, setSecondPw] = useState("");
   const serverUrl = getServerUrl();
+  let url = "";
+  let data = {};
 
   function submit() {
     if (mode === "register") {
-      const url = `${serverUrl}blood/register`;
-      const data = {
+      url = `${serverUrl}blood/register`;
+      data = {
         method: "POST",
         headers: {
           Authorization: `Bearer ${getToken()}`,
@@ -23,25 +25,53 @@ export default function bloodRegister({ route, navigation }) {
           secondpassword: secondPw,
         }),
       };
-
-      fetch(url, data)
-        .then((response) => {
-          return response.json();
-        })
-        .then((responseJson) => {
-          console.log("responseJson :>> ", responseJson);
-          if (responseJson.message === "헌혈증 등록이 완료되었습니다.") {
-            Alert.alert("등록 성공", "헌혈증 등록이 완료되었습니다.");
-            navigation.popToTop();
-          } else if (responseJson.message === "이미 존재하는 번호 입니다.") {
-            Alert.alert("등록 실패", "이미 등록되어있는 헌혈증입니다.");
-            navigation.goBack();
-          }
-        })
-        .catch((error) => {
-          console.log("error :>> ", error);
-        });
+    } else if (mode === "send") {
+      url = `${serverUrl}blood/send`;
+      data = {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          secondpassword: secondPw,
+          receiver: email,
+          count: count,
+        }),
+      };
     }
+    fetch(url, data)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseJson) => {
+        console.log("responseJson :>> ", responseJson);
+        if (responseJson.message === "헌혈증 등록이 완료되었습니다.") {
+          Alert.alert("등록 성공", "헌혈증 등록이 완료되었습니다.");
+          navigation.popToTop();
+        } else if (
+          responseJson.message ===
+          "헌혈증 거래가 성공 하였습니다. 보내는건 기록과 각 유저 헌혈증 갯수입니다."
+        ) {
+          Alert.alert("보내기 성공", "헌혈증이 성공적으로 보내졌습니다.");
+          navigation.popToTop();
+        } else if (
+          responseJson.message === "2차 비밀번호가 일치하지 않습니다."
+        ) {
+          Alert.alert("실패", responseJson.message);
+        } else if (
+          responseJson.message === `Cannot read property '_id' of null`
+        ) {
+          Alert.alert("실패", "받는사람의 이메일을 확인하세요");
+          navigation.goBack();
+        } else {
+          Alert.alert("실패", responseJson.message);
+          navigation.goBack();
+        }
+      })
+      .catch((error) => {
+        console.log("error :>> ", error);
+      });
   }
 
   return (

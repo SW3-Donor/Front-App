@@ -35,7 +35,12 @@ export default function main({ navigation }) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.innerBtn}>
-            <Text style={styles.innerText}>헌혈증 보내기</Text>
+            <Text
+              style={styles.innerText}
+              onPress={() => navigation.navigate("bloodSendMail")}
+            >
+              헌혈증 보내기
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.innerBtn}>
             <Text style={styles.innerText}>헌혈증 내역보기</Text>

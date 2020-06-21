@@ -10,6 +10,7 @@ import createSecondPassword from "./screens/auth_screen/createSecondPassword";
 import main from "./screens/main_screen/main";
 import bloodRegister from "./screens/main_screen/bloodRegister";
 import checkSecondPassword from "./screens/main_screen/checkSecondPassword";
+import { bloodSendMail, bloodSendNum } from "./screens/main_screen/bloodSend";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -48,6 +49,21 @@ const HomeStackScreen = () => (
       component={bloodRegister}
       options={{ title: "헌혈증 추가", headerTintColor: "#fb5555" }}
     />
+    <HomeStack.Screen
+      name="bloodSendMail"
+      component={bloodSendMail}
+      options={{ title: "헌혈증 보내기", headerTintColor: "#fb5555" }}
+    />
+    <HomeStack.Screen
+      name="bloodSendNum"
+      component={bloodSendNum}
+      options={{ title: "헌혈증 보내기", headerTintColor: "#fb5555" }}
+    />
+    <HomeStack.Screen
+      name="bloodList"
+      component={bloodList}
+      options={{ title: "헌혈증 내역", headerTintColor: "#fb5555" }}
+    />
   </HomeStack.Navigator>
 );
 
@@ -55,7 +71,7 @@ export default function App() {
   const [userToken, setUserToken] = React.useState(null);
   const [userId, setUserId] = React.useState("");
   const [serverUrl, setServerUrl] = React.useState(
-    "http://192.168.0.135:8080/"
+    "http://192.168.0.135:5000/"
   );
   const authContext = React.useMemo(() => {
     return {

@@ -5,7 +5,7 @@ import { AuthContext } from "../../Context";
 
 export default function App({ route, navigation }) {
   const { userId } = route.params;
-  const { getServerUrl, getToken } = React.useContext(AuthContext);
+  const { getServerUrl } = React.useContext(AuthContext);
   const [secondpassword, setSecondpassword] = useState("");
   const serverUrl = getServerUrl();
 
