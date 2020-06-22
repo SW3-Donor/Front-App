@@ -11,6 +11,7 @@ import main from "./screens/main_screen/main";
 import bloodRegister from "./screens/main_screen/bloodRegister";
 import checkSecondPassword from "./screens/main_screen/checkSecondPassword";
 import { bloodSendMail, bloodSendNum } from "./screens/main_screen/bloodSend";
+import bloodList from "./screens/main_screen/bloodList";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -71,7 +72,7 @@ export default function App() {
   const [userToken, setUserToken] = React.useState(null);
   const [userId, setUserId] = React.useState("");
   const [serverUrl, setServerUrl] = React.useState(
-    "http://192.168.0.135:5000/"
+    "http://192.168.0.135:8080/"
   );
   const authContext = React.useMemo(() => {
     return {

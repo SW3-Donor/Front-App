@@ -143,10 +143,10 @@ export default function createUser({ navigation }) {
           <TouchableOpacity
             style={styles.signupBtn}
             onPress={() => {
-              setModalVisible(true);
+              navigation.goBack();
             }}
           >
-            <Text style={{ color: "red" }}>모달띄우기</Text>
+            <Text style={{ color: "red" }}>뒤로가기</Text>
           </TouchableOpacity>
         </View>
       </View>

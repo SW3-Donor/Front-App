@@ -14,7 +14,10 @@ export default function main({ navigation }) {
       </View>
       <View style={styles.line}></View>
       <View style={styles.box}>
-        <TouchableOpacity style={styles.titleBox}>
+        <TouchableOpacity
+          style={styles.titleBox}
+          onPress={() => navigation.navigate("bloodList")}
+        >
           <View style={styles.titleL}>
             <Text style={styles.titleText}>내 헌혈증</Text>
           </View>
@@ -43,7 +46,12 @@ export default function main({ navigation }) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.innerBtn}>
-            <Text style={styles.innerText}>헌혈증 내역보기</Text>
+            <Text
+              style={styles.innerText}
+              onPress={() => navigation.navigate("bloodList")}
+            >
+              헌혈증 내역보기
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
