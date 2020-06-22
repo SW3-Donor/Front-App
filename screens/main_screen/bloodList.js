@@ -63,8 +63,9 @@ function ViewReceive({ info }) {
 }
 
 export default function bloodList({ navigation }) {
-  const { getServerUrl, getToken } = React.useContext(AuthContext);
-  const [email, setEmail] = useState("");
+  const { getServerUrl, getToken, getUserData, setUserData } = React.useContext(
+    AuthContext
+  );
   const [info, setInfo] = useState({ count: [] });
   const serverUrl = getServerUrl();
   const [bloodVisible, setBloodVisible] = useState(true);
@@ -93,6 +94,7 @@ export default function bloodList({ navigation }) {
       .then((responseJson) => {
         console.log(responseJson);
         setInfo(responseJson);
+        setUserData(responseJson);
         setIndicator(false);
       })
       .catch((error) => {
@@ -149,7 +151,7 @@ export default function bloodList({ navigation }) {
       </View>
       <Text style={{ textAlign: "right", marginBottom: 10, fontSize: 18 }}>
         <Text>소유하고 있는 헌혈증</Text>
-        <Text> {info.count} 개 </Text>
+        <Text> {getUserData().count} 개 </Text>
       </Text>
       <View style={{ flex: 1 }}>
         {indicator ? (
@@ -159,6 +161,7 @@ export default function bloodList({ navigation }) {
             <ActivityIndicator size="large" style={{ alignItems: "center" }} />
           </View>
         ) : null}
+
         {bloodVisible ? <Viewblood info={info} /> : null}
         {sendVisivle ? <ViewSend info={info} /> : null}
         {receiveVisivle ? <ViewReceive info={info} /> : null}

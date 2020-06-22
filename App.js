@@ -86,6 +86,7 @@ export default function App() {
   const [serverUrl, setServerUrl] = React.useState(
     "http://192.168.0.135:8080/"
   );
+  const [userData, setUserData] = React.useState({});
   const authContext = React.useMemo(() => {
     return {
       getServerUrl: () => {
@@ -106,6 +107,12 @@ export default function App() {
       },
       getUserId: () => {
         return userId;
+      },
+      setUserData: (info) => {
+        setUserData(info);
+      },
+      getUserData: () => {
+        return userData;
       },
     };
   });

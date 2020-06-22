@@ -4,7 +4,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
 
 export default function main({ navigation }) {
-  const { getServerUrl, getToken, signOut } = React.useContext(AuthContext);
+  const { getServerUrl, getToken, setUserData, getUserData } = React.useContext(
+    AuthContext
+  );
   const [info, setInfo] = useState({ count: [] });
   const [first, setFirst] = useState(true);
   const serverUrl = getServerUrl();
@@ -25,7 +27,7 @@ export default function main({ navigation }) {
       })
       .then((responseJson) => {
         console.log(responseJson);
-        setInfo(responseJson);
+        setUserData(responseJson);
       })
       .catch((error) => {
         console.log("error :>> ", error);
@@ -42,8 +44,10 @@ export default function main({ navigation }) {
       <View style={styles.profileBox}>
         <View style={styles.profileText}>
           <TouchableOpacity onPress={() => navigation.navigate("mypage")}>
-            <Text style={{ fontSize: 30 }}>{info.name}</Text>
-            <Text style={{ marginTop: 10, fontSize: 16 }}>{info.email}</Text>
+            <Text style={{ fontSize: 30 }}>{getUserData().name}</Text>
+            <Text style={{ marginTop: 10, fontSize: 16 }}>
+              {getUserData().email}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -58,7 +62,7 @@ export default function main({ navigation }) {
           </View>
           <View>
             <Text style={styles.titleText}>
-              <Text>{info.count}</Text>
+              <Text>{getUserData().count}</Text>
               <Text>장 {">"}</Text>
             </Text>
           </View>
@@ -91,14 +95,16 @@ export default function main({ navigation }) {
         </View>
       </View>
       <View style={styles.box}>
-        <View style={styles.titleBox}>
-          <View style={styles.titleL}>
-            <Text style={styles.titleText}>기부 게시판</Text>
+        <TouchableOpacity>
+          <View style={styles.titleBox}>
+            <View style={styles.titleL}>
+              <Text style={styles.titleText}>기부 게시판</Text>
+            </View>
+            <View>
+              <Text style={styles.titleText}>{">"}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.titleText}>{">"}</Text>
-          </View>
-        </View>
+        </TouchableOpacity>
         <View>
           <View></View>
         </View>
