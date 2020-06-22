@@ -1,17 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { AuthContext } from "../../Context";
 
 export default function main({ navigation }) {
+  const { getServerUrl, getToken, signOut } = React.useContext(AuthContext);
+  const [info, setInfo] = useState({ count: [] });
+  const [first, setFirst] = useState(true);
+  const serverUrl = getServerUrl();
+
+  function refresh() {
+    const url = `${serverUrl}profile/user`;
+    const data = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(url, data)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseJson) => {
+        console.log(responseJson);
+        setInfo(responseJson);
+      })
+      .catch((error) => {
+        console.log("error :>> ", error);
+      });
+  }
+
+  if (first) {
+    setFirst(false);
+    refresh();
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
         <View style={styles.profileText}>
           <TouchableOpacity onPress={() => navigation.navigate("mypage")}>
-            <Text style={{ fontSize: 30 }}>강용재</Text>
-            <Text style={{ marginTop: 10, fontSize: 16 }}>
-              k33721@gmail.com
-            </Text>
+            <Text style={{ fontSize: 30 }}>{info.name}</Text>
+            <Text style={{ marginTop: 10, fontSize: 16 }}>{info.email}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -26,7 +58,7 @@ export default function main({ navigation }) {
           </View>
           <View>
             <Text style={styles.titleText}>
-              <Text>10</Text>
+              <Text>{info.count}</Text>
               <Text>장 {">"}</Text>
             </Text>
           </View>
