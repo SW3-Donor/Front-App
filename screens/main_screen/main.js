@@ -7,10 +7,13 @@ export default function main({ navigation }) {
     <View style={styles.container}>
       <View style={styles.profileBox}>
         <View style={styles.profileText}>
-          <Text style={{ fontSize: 30 }}>강용재</Text>
-          <Text style={{ marginTop: 10, fontSize: 16 }}>k33721@gmail.com</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("mypage")}>
+            <Text style={{ fontSize: 30 }}>강용재</Text>
+            <Text style={{ marginTop: 10, fontSize: 16 }}>
+              k33721@gmail.com
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.profileImg}></View>
       </View>
       <View style={styles.line}></View>
       <View style={styles.box}>

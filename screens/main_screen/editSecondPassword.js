@@ -3,9 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import { TextInput, ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
 
-export default function App({ route, navigation }) {
-  const { userId } = route.params;
-  const { getServerUrl } = React.useContext(AuthContext);
+export default function editSecondPassword({ navigation }) {
+  const { getServerUrl, getToken } = React.useContext(AuthContext);
   const [secondpassword, setSecondpassword] = useState("");
   const serverUrl = getServerUrl();
 
@@ -15,11 +14,10 @@ export default function App({ route, navigation }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer null",
+        Authorization: `Bearer ${getToken()}`,
       },
       body: JSON.stringify({
         secondpassword: secondpassword,
-        userId: userId,
       }),
     };
 
@@ -29,8 +27,8 @@ export default function App({ route, navigation }) {
       })
       .then((responseJson) => {
         console.log(responseJson);
-        Alert.alert("가입완료", "회원가입이 완료되었습니다.");
-        navigation.popToTop();
+        Alert.alert("수정 완료", "2차 비밀번호가 수정되었습니다.");
+        navigation.goBack();
       })
       .catch((error) => {
         alert("test");
@@ -41,7 +39,7 @@ export default function App({ route, navigation }) {
     <View style={styles.container}>
       <ScrollView style={styles.inputView}>
         <Text style={{ fontSize: 25, padding: 10, marginBottom: 20 }}>
-          2차 비밀번호 설정
+          2차 비밀번호 수정
         </Text>
         <TextInput
           placeholder="2차 비밀번호"
@@ -55,7 +53,7 @@ export default function App({ route, navigation }) {
       <View style={styles.submitView}>
         <TouchableOpacity style={styles.submitBtn} onPress={submit}>
           <Text style={{ color: "white", fontSize: 20 }}>
-            2차 비밀번호 설정하기
+            2차 비밀번호 수정하기
           </Text>
         </TouchableOpacity>
       </View>

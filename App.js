@@ -12,6 +12,8 @@ import bloodRegister from "./screens/main_screen/bloodRegister";
 import checkSecondPassword from "./screens/main_screen/checkSecondPassword";
 import { bloodSendMail, bloodSendNum } from "./screens/main_screen/bloodSend";
 import bloodList from "./screens/main_screen/bloodList";
+import mypage from "./screens/main_screen/mypage";
+import editSecondPassword from "./screens/main_screen/editSecondPassword";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -65,6 +67,16 @@ const HomeStackScreen = () => (
       component={bloodList}
       options={{ title: "헌혈증 내역", headerTintColor: "#fb5555" }}
     />
+    <HomeStack.Screen
+      name="mypage"
+      component={mypage}
+      options={{ title: "내 정보", headerTintColor: "#fb5555" }}
+    />
+    <HomeStack.Screen
+      name="editSecondPassword"
+      component={editSecondPassword}
+      options={{ title: "2차 비밀번호 수정", headerTintColor: "#fb5555" }}
+    />
   </HomeStack.Navigator>
 );
 
@@ -87,7 +99,7 @@ export default function App() {
       },
       signOut: () => {
         setUserToken(null);
-        serUserId(null);
+        setUserId(null);
       },
       setUserId: (userId) => {
         setUserId(userId);
