@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function main({ navigation }) {
   const { getServerUrl, getToken, setUserData, getUserData } = React.useContext(
     AuthContext
   );
-  const [info, setInfo] = useState({ count: [] });
   const [first, setFirst] = useState(true);
   const serverUrl = getServerUrl();
+  const isFocused = useIsFocused();
 
   function refresh() {
     const url = `${serverUrl}profile/user`;
@@ -34,9 +35,22 @@ export default function main({ navigation }) {
       });
   }
 
-  if (first) {
-    setFirst(false);
-    refresh();
+  // if (first) {
+  //   setFirst(false);
+  //   refresh();
+  // }
+
+  if (isFocused) {
+    if (first) {
+      setFirst(false);
+      refresh();
+      console.log("first :>> ", first);
+    }
+  } else if (!isFocused) {
+    if (!first) {
+      setFirst(true);
+      console.log("first :>> ", first);
+    }
   }
 
   return (
@@ -95,7 +109,7 @@ export default function main({ navigation }) {
         </View>
       </View>
       <View style={styles.box}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("boardList")}>
           <View style={styles.titleBox}>
             <View style={styles.titleL}>
               <Text style={styles.titleText}>기부 게시판</Text>
