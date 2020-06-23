@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { TextInput, ScrollView, FlatList } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
+import { useIsFocused } from "@react-navigation/native";
 
 function Me({ navigation, data }) {
   const { getServerUrl, getToken } = React.useContext(AuthContext);
@@ -102,6 +103,7 @@ export default function boardList({ route, navigation }) {
   const [data, setData] = useState({});
   const userData = getUserData();
   const serverUrl = getServerUrl();
+  const isFocused = useIsFocused();
 
   function refresh() {
     const url = `${serverUrl}board/post${id}`;
@@ -118,7 +120,6 @@ export default function boardList({ route, navigation }) {
         return response.json();
       })
       .then((responseJson) => {
-        console.log(responseJson);
         setData(responseJson.post);
       })
       .catch((error) => {
@@ -126,9 +127,15 @@ export default function boardList({ route, navigation }) {
       });
   }
 
-  if (first) {
-    setFirst(false);
-    refresh();
+  if (isFocused) {
+    if (first) {
+      setFirst(false);
+      refresh();
+    }
+  } else if (!isFocused) {
+    if (!first) {
+      setFirst(true);
+    }
   }
 
   return (

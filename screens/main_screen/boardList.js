@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { TextInput, ScrollView, FlatList } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
+import { useIsFocused } from "@react-navigation/native";
 
 function Item({ title, content, id, navigation }) {
   return (
@@ -16,17 +17,20 @@ function Item({ title, content, id, navigation }) {
         onPress={() => navigation.navigate("boardPost", { id: id })}
       >
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.content}>{content}</Text>
+        <Text style={styles.content}>{content.substr(0, 64)}</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 export default function boardList({ navigation }) {
-  const { getServerUrl, getToken } = React.useContext(AuthContext);
+  const { getServerUrl, getToken, getUserData } = React.useContext(AuthContext);
   const [first, setFirst] = useState(true);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
+  const [isMine, setIsMine] = useState(false);
+  const email = getUserData().email;
   const serverUrl = getServerUrl();
+  const isFocused = useIsFocused();
 
   function refresh() {
     const url = `${serverUrl}board/posts`;
@@ -43,22 +47,39 @@ export default function boardList({ navigation }) {
         return response.json();
       })
       .then((responseJson) => {
-        console.log(responseJson);
-        setData(responseJson);
+        setData(responseJson.posts.reverse());
       })
       .catch((error) => {
         console.log("error :>> ", error);
       });
   }
 
-  if (first) {
-    setFirst(false);
-    refresh();
+  function getMine() {
+    return data.filter((post) => post.email === email);
+  }
+
+  if (isFocused) {
+    if (first) {
+      setFirst(false);
+      refresh();
+    }
+  } else if (!isFocused) {
+    if (!first) {
+      setFirst(true);
+    }
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.menu}>
+        <TouchableOpacity onPress={() => refresh()}>
+          <Text style={styles.button}>새로고침</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsMine((mine) => !mine)}>
+          <Text style={styles.button}>
+            {isMine ? "전체보기" : "내 글 모아보기"}
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("boardWrite", { mode: "write" })}
         >
@@ -67,7 +88,7 @@ export default function boardList({ navigation }) {
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={data.posts}
+          data={isMine ? getMine() : data}
           renderItem={({ item }) => (
             <Item
               title={item.title}
@@ -107,6 +128,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "#ffffff",
     marginBottom: 3,
+    marginRight: 5,
   },
   title: {
     fontSize: 18,

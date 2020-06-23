@@ -9,12 +9,18 @@ export default function main({ navigation }) {
     AuthContext
   );
   const [first, setFirst] = useState(true);
+  const [data, setData] = useState([
+    { _id: "", title: "", content: "" },
+    { _id: "", title: "", content: "" },
+    { _id: "", title: "", content: "" },
+    { _id: "", title: "", content: "" },
+  ]);
   const serverUrl = getServerUrl();
   const isFocused = useIsFocused();
 
   function refresh() {
-    const url = `${serverUrl}profile/user`;
-    const data = {
+    let url = `${serverUrl}profile/user`;
+    let data = {
       method: "POST",
       headers: {
         Authorization: `Bearer ${getToken()}`,
@@ -27,29 +33,41 @@ export default function main({ navigation }) {
         return response.json();
       })
       .then((responseJson) => {
-        console.log(responseJson);
         setUserData(responseJson);
+      })
+      .catch((error) => {
+        console.log("error :>> ", error);
+      });
+
+    url = `${serverUrl}board/posts`;
+    data = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch(url, data)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseJson) => {
+        setData(responseJson.posts.reverse());
       })
       .catch((error) => {
         console.log("error :>> ", error);
       });
   }
 
-  // if (first) {
-  //   setFirst(false);
-  //   refresh();
-  // }
-
   if (isFocused) {
     if (first) {
       setFirst(false);
       refresh();
-      console.log("first :>> ", first);
     }
   } else if (!isFocused) {
     if (!first) {
       setFirst(true);
-      console.log("first :>> ", first);
     }
   }
 
@@ -120,7 +138,54 @@ export default function main({ navigation }) {
           </View>
         </TouchableOpacity>
         <View>
-          <View></View>
+          <View style={styles.item}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("boardPost", { id: data[0]._id })
+              }
+            >
+              <Text style={styles.title}>{data[0].title}</Text>
+              <Text style={styles.content}>
+                {data[0].content.substr(0, 64)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.item}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("boardPost", { id: data[1]._id })
+              }
+            >
+              <Text style={styles.title}>{data[1].title}</Text>
+              <Text style={styles.content}>
+                {data[1].content.substr(0, 64)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.item}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("boardPost", { id: data[2]._id })
+              }
+            >
+              <Text style={styles.title}>{data[2].title}</Text>
+              <Text style={styles.content}>
+                {data[2].content.substr(0, 64)}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.item}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("boardPost", { id: data[3]._id })
+              }
+            >
+              <Text style={styles.title}>{data[3].title}</Text>
+              <Text style={styles.content}>
+                {data[3].content.substr(0, 64)}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -179,5 +244,14 @@ const styles = StyleSheet.create({
   },
   innerText: {
     fontSize: 18,
+  },
+  title: {
+    fontSize: 18,
+  },
+  item: {
+    borderBottomColor: "#eeeeee",
+    borderBottomWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
 });
