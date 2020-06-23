@@ -59,7 +59,9 @@ export default function boardList({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.menu}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("boardWrite", { mode: "write" })}
+        >
           <Text style={styles.button}>글쓰기</Text>
         </TouchableOpacity>
       </View>

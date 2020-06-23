@@ -16,6 +16,7 @@ import mypage from "./screens/main_screen/mypage";
 import editSecondPassword from "./screens/main_screen/editSecondPassword";
 import boardList from "./screens/main_screen/boardList";
 import boardPost from "./screens/main_screen/boardPost";
+import boardWrite from "./screens/main_screen/boardWrite";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -87,6 +88,11 @@ const HomeStackScreen = () => (
     <HomeStack.Screen
       name="boardPost"
       component={boardPost}
+      options={{ title: "", headerTintColor: "#fb5555" }}
+    />
+    <HomeStack.Screen
+      name="boardWrite"
+      component={boardWrite}
       options={{ title: "", headerTintColor: "#fb5555" }}
     />
   </HomeStack.Navigator>
