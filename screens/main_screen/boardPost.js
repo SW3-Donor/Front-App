@@ -9,27 +9,15 @@ import {
 import { TextInput, ScrollView, FlatList } from "react-native-gesture-handler";
 import { AuthContext } from "../../Context";
 
-function Item({ title, content, id, navigation }) {
-  return (
-    <View style={styles.item}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("boardPost", { id: id })}
-      >
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.content}>{content}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-export default function boardList({ navigation }) {
+export default function boardList({ route, navigation }) {
   const { getServerUrl, getToken } = React.useContext(AuthContext);
+  const { id } = route.params;
   const [first, setFirst] = useState(true);
   const [data, setData] = useState({});
   const serverUrl = getServerUrl();
 
   function refresh() {
-    const url = `${serverUrl}board/posts`;
+    const url = `${serverUrl}board/post${id}`;
     const data = {
       method: "GET",
       headers: {
@@ -44,7 +32,7 @@ export default function boardList({ navigation }) {
       })
       .then((responseJson) => {
         console.log(responseJson);
-        setData(responseJson);
+        setData(responseJson.post);
       })
       .catch((error) => {
         console.log("error :>> ", error);
@@ -58,24 +46,23 @@ export default function boardList({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.menu}>
+      <View style={styles.titleView}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.name}>{data.name}</Text>
+          <Text>{data.updatedAt}</Text>
+        </View>
+        <Text style={{ marginRight: 10 }}>
+          {data.received} / {data.count}
+        </Text>
         <TouchableOpacity>
-          <Text style={styles.button}>글쓰기</Text>
+          <Text style={styles.button}>기부하기</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={data.posts}
-          renderItem={({ item }) => (
-            <Item
-              title={item.title}
-              content={item.content}
-              id={item._id}
-              navigation={navigation}
-            />
-          )}
-          keyExtractor={(item) => item._id}
-        ></FlatList>
+      <View style={styles.postView}>
+        <ScrollView>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={{ fontSize: 15 }}>{data.content}</Text>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -85,18 +72,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 8,
+    padding: 10,
   },
-  item: {
-    borderBottomColor: "#eeeeee",
-    borderBottomWidth: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-  },
-  menu: {
+  titleView: {
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
+  },
+  postView: {
+    flex: 1,
+    marginTop: 20,
   },
   button: {
     padding: 10,
@@ -107,6 +92,10 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   title: {
+    fontSize: 23,
+    fontWeight: "bold",
+  },
+  name: {
     fontSize: 18,
   },
 });

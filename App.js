@@ -15,6 +15,7 @@ import bloodList from "./screens/main_screen/bloodList";
 import mypage from "./screens/main_screen/mypage";
 import editSecondPassword from "./screens/main_screen/editSecondPassword";
 import boardList from "./screens/main_screen/boardList";
+import boardPost from "./screens/main_screen/boardPost";
 
 const RootStack = createStackNavigator();
 const RootStackScreen = () => (
@@ -82,6 +83,11 @@ const HomeStackScreen = () => (
       name="boardList"
       component={boardList}
       options={{ title: "기부 게시판", headerTintColor: "#fb5555" }}
+    />
+    <HomeStack.Screen
+      name="boardPost"
+      component={boardPost}
+      options={{ title: "", headerTintColor: "#fb5555" }}
     />
   </HomeStack.Navigator>
 );
