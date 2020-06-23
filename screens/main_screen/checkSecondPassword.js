@@ -39,6 +39,20 @@ export default function bloodRegister({ route, navigation }) {
           count: count,
         }),
       };
+    } else if (mode === "quickSend") {
+      url = `${serverUrl}blood/send`;
+      data = {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          secondpassword: secondPw,
+          postId: email,
+          count: count,
+        }),
+      };
     }
     fetch(url, data)
       .then((response) => {

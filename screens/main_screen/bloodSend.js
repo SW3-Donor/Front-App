@@ -36,15 +36,23 @@ export function bloodSendMail({ navigation }) {
 }
 
 export function bloodSendNum({ route, navigation }) {
-  const { email } = route.params;
+  const { email, mode } = route.params;
   const [num, setNum] = useState("");
 
   function submit() {
-    navigation.navigate("checkSecondPassword", {
-      email: email,
-      count: num,
-      mode: "send",
-    });
+    if (mode === "quickSend") {
+      navigation.navigate("checkSecondPassword", {
+        email: email,
+        count: num,
+        mode: "quickSend",
+      });
+    } else {
+      navigation.navigate("checkSecondPassword", {
+        email: email,
+        count: num,
+        mode: "send",
+      });
+    }
   }
 
   return (

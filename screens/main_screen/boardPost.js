@@ -75,11 +75,21 @@ function Me({ navigation, data }) {
   );
 }
 
-function NotMe({ navigation }) {
+function NotMe({ navigation, data }) {
   return (
     <View>
       <TouchableOpacity>
-        <Text style={styles.button}>기부하기</Text>
+        <Text
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("bloodSendNum", {
+              mode: "quickSend",
+              email: data._id,
+            });
+          }}
+        >
+          기부하기
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -134,7 +144,7 @@ export default function boardList({ route, navigation }) {
         {userData.email === data.email ? (
           <Me navigation={navigation} data={data} />
         ) : (
-          <NotMe navigation={navigation} />
+          <NotMe navigation={navigation} data={data} />
         )}
       </View>
       <View style={styles.postView}>
