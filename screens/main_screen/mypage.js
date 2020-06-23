@@ -23,6 +23,10 @@ export default function myPage({ navigation }) {
             <Text> {getUserData().name}</Text>
           </Text>
           <Text style={{ marginBottom: 10, fontSize: 18 }}>
+            <Text style={{ margin: 7 }}>연락처 : </Text>
+            <Text> {getUserData().phone}</Text>
+          </Text>
+          <Text style={{ marginBottom: 10, fontSize: 18 }}>
             <Text style={{ margin: 7 }}>이메일 : </Text>
             <Text> {getUserData().email}</Text>
           </Text>
